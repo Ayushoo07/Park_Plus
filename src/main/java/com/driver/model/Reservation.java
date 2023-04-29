@@ -59,7 +59,7 @@ public class Reservation
 
   @ManyToOne @JoinColumn Spot spot;
 
-    @OneToOne
+    @OneToOne(mappedBy = "reservation",cascade = CascadeType.ALL)
     @JoinColumn
     Payment payment;
 

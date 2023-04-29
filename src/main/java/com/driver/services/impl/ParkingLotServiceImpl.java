@@ -62,7 +62,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         ParkingLot parkingLot=spot.getParkingLot();
         parkingLot.getSpotList().remove(spot);
         spot.setParkingLot(null);
-        parkingLotRepository1.save(parkingLot);
+        spotRepository1.save(spot);
     }
 
     @Override

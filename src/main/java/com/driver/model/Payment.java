@@ -21,7 +21,7 @@ public class Payment
 
   public Payment() {}
 
-  @OneToOne(mappedBy = "payment",cascade = CascadeType.ALL)
+  @OneToOne
   @JoinColumn Reservation reservation;
 
   public int getId() {
