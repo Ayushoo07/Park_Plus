@@ -41,7 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         int minPrice=Integer.MAX_VALUE;
-        int reqSpotId=0;
+        Spot reqSpot=null;
 
         for (Spot spot: parkingLot.getSpotList())
         {
@@ -63,14 +63,13 @@ public class ReservationServiceImpl implements ReservationService {
             if(spot.getOccupied()==false && numberOfWheels<=wheels && spot.getPricePerHour()<minPrice )
             {
                 minPrice=spot.getPricePerHour();
-                reqSpotId=spot.getId();
+                reqSpot=spot;
             }
         }
 
-        if (reqSpotId==0)
+        if (reqSpot==null)
             throw new Exception("Cannot make reservation");
 
-        Spot reqSpot=spotRepository3.findById(reqSpotId).get();
         reqSpot.setOccupied(true);
         Reservation reservation=new Reservation();
         reservation.setSpot(reqSpot);
