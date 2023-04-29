@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
             throw new Exception("Insufficient Amount");
         }
 
-        Payment payment = reservation.getPayment();
+        Payment payment = new Payment();
         if(mode.equals("cash"))
         {
             payment.setPaymentMode(PaymentMode.CASH);
@@ -47,8 +47,9 @@ public class PaymentServiceImpl implements PaymentService {
         }
         payment.setReservation(reservation);
         payment.setPaymentCompleted(true);
-
+        reservation.setPayment(payment);
         reservationRepository2.save(reservation);
+
         return payment;
     }
 }
