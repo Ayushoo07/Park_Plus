@@ -23,6 +23,64 @@ public class ReservationServiceImpl implements ReservationService {
     ParkingLotRepository parkingLotRepository3;
     @Override
     public Reservation reserveSpot(Integer userId, Integer parkingLotId, Integer timeInHours, Integer numberOfWheels) throws Exception {
+        User user;
+        try{
+            user =userRepository3.findById(userId).get();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Cannot make reservation");
+        }
+        ParkingLot parkingLot;
+        try {
+            parkingLot=parkingLotRepository3.findById(parkingLotId).get();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Cannot make reservation");
+        }
 
+        int minPrice=Integer.MAX_VALUE;
+        int reqSpotId=0;
+
+        for (Spot spot: parkingLot.getSpotList())
+        {
+            SpotType spotType=spot.getSpotType();
+            int wheels=0;
+            if (spotType.equals(SpotType.TWO_WHEELER))
+            {
+                wheels=2;
+            }
+            else if(spotType.equals(SpotType.FOUR_WHEELER))
+            {
+                wheels=4;
+            }
+            else
+            {
+                wheels=Integer.MAX_VALUE;
+            }
+
+            if(spot.isOccupied()==false && numberOfWheels<=wheels && spot.getPricePerHour()<minPrice )
+            {
+                minPrice=spot.getPricePerHour();
+                reqSpotId=spot.getId();
+            }
+        }
+
+        if (reqSpotId==0)
+            throw new Exception("Cannot make reservation");
+
+        Spot reqSpot=spotRepository3.findById(reqSpotId).get();
+        reqSpot.setOccupied(true);
+        Reservation reservation=new Reservation();
+        reservation.setSpot(reqSpot);
+        reservation.setNumberOfHours(timeInHours);
+        reservation.setUser(user);
+        user.getReservationList().add(reservation);
+
+        spotRepository3.save(reqSpot);
+        reservationRepository3.save(reservation);
+
+        return reservation;
     }
 }
