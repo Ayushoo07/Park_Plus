@@ -18,6 +18,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment pay(Integer reservationId, int amountSent, String mode) throws Exception
     {
+        mode=mode.toLowerCase();
         Reservation reservation=reservationRepository2.findById(reservationId).get();
         if((!mode.equals("cash")) && (!mode.equals("card")) && (!mode.equals("upi")))
         {

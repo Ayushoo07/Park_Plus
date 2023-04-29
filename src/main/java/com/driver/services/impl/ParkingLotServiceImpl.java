@@ -61,7 +61,6 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         Spot spot=spotRepository1.findById(spotId).get();
         ParkingLot parkingLot=spot.getParkingLot();
         parkingLot.getSpotList().remove(spot);
-
         spotRepository1.delete(spot);
     }
 
@@ -87,7 +86,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
         List<Spot> spots=parkingLot.getSpotList();
         for (Spot spot : spots)
         {
-            spotRepository1.delete(spot);
+            deleteSpot(spot.getId());
         }
         parkingLot.setSpotList(new ArrayList<>());
         parkingLotRepository1.delete(parkingLot);
