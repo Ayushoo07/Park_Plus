@@ -6,7 +6,7 @@ import com.driver.model.SpotType;
 import com.driver.repository.ParkingLotRepository;
 import com.driver.repository.SpotRepository;
 import com.driver.services.ParkingLotService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.sql.Update;import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,12 +64,15 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     @Override
     public Spot updateSpot(int parkingLotId, int spotId, int pricePerHour)
     {
-        Spot updateSpot=spotRepository1.findById(spotId).get();
-        ParkingLot newparkingLot=parkingLotRepository1.findById(parkingLotId).get();
-        updateSpot.setParkingLot(newparkingLot);
-        newparkingLot.getSpotList().add(updateSpot);
+        ParkingLot parkingLot=parkingLotRepository1.findById(parkingLotId).get();
+        Spot updateSpot=null;
+        for (Spot spot:parkingLot.getSpotList())
+        {
+            if(spot.getId()==spotId)
+                updateSpot=spot;
+        }
         updateSpot.setPricePerHour(pricePerHour);
-        parkingLotRepository1.save(newparkingLot);
+        parkingLotRepository1.save(parkingLot);
         return updateSpot;
 
     }
