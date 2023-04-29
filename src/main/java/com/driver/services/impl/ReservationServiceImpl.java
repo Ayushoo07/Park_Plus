@@ -60,7 +60,7 @@ public class ReservationServiceImpl implements ReservationService {
                 wheels=Integer.MAX_VALUE;
             }
 
-            if(spot.isOccupied()==false && numberOfWheels<=wheels && spot.getPricePerHour()<minPrice )
+            if(spot.getOccupied()==false && numberOfWheels<=wheels && spot.getPricePerHour()<minPrice )
             {
                 minPrice=spot.getPricePerHour();
                 reqSpotId=spot.getId();
