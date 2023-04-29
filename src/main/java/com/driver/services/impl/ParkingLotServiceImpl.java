@@ -82,6 +82,8 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     public void deleteParkingLot(int parkingLotId)
     {
         ParkingLot parkingLot=parkingLotRepository1.findById(parkingLotId).get();
+        for(Spot spot: parkingLot.getSpotList())
+            deleteSpot(spot.getId());
         parkingLotRepository1.delete(parkingLot);
 
     }
